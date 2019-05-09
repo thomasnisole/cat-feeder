@@ -10,12 +10,10 @@
 #include "feeder-motor.h"
 #include "alarm-manager.h"
 
-/*
 #define WIFI_SSID       "WIFI_SSID"
 #define WIFI_PASSWORD   "WIFI_PASSWORD"
 #define FIREBASE_HOST   "FIREBASE_HOST"
 #define FIREBASE_TOKEN  "FIREBASE_TOKEN"
-*/
 
 #define WIFI_CONNECT_TIMEOUT      5
 #define FIREBASE_AUTH_TIMEOUT     5
