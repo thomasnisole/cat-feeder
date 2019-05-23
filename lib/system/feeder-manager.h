@@ -9,11 +9,12 @@
 #include "time-api.h"
 #include "feeder-motor.h"
 #include "alarm-manager.h"
+#include "storage.h"
 
-#define WIFI_SSID       "WIFI_SSID"
-#define WIFI_PASSWORD   "WIFI_PASSWORD"
-#define FIREBASE_HOST   "FIREBASE_HOST"
-#define FIREBASE_TOKEN  "FIREBASE_TOKEN"
+#define WIFI_SSID       "kereon"
+#define WIFI_PASSWORD   "camerappelleunevieillecopine"
+#define FIREBASE_HOST   "cat-feeder-66c26.firebaseio.com"
+#define FIREBASE_TOKEN  "1OMWIJPzgentPSNAEoTYPZTzLwrlfCWI8ht0MqtL"
 
 #define WIFI_CONNECT_TIMEOUT      5
 #define FIREBASE_AUTH_TIMEOUT     5
@@ -30,12 +31,13 @@ private:
   FeederRepository *m_feederRepository;
   TimeApi *m_timeApi;
   FeederMotor *m_feederMotor;
+  AlarmManager *m_alarmManager;
+  Storage *m_storage;
 
   Feeder *m_feeder;
-  AlarmManager *m_alarmManager;
 
 public:
-  FeederManager(Wifi *wifi, Firebase *firebase, FeederRepository *feederRepository, TimeApi *timeApi, FeederMotor *feederMotor);
+  FeederManager(Wifi *wifi, Firebase *firebase, FeederRepository *feederRepository, TimeApi *timeApi, FeederMotor *feederMotor, AlarmManager *alarmManager, Storage *storage);
   ~FeederManager();
 
   void synchronize();

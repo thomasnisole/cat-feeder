@@ -1,9 +1,8 @@
 #include "feeder-manager.h"
 
-FeederManager::FeederManager(Wifi *wifi, Firebase *firebase, FeederRepository *feederRepository, TimeApi *timeApi, FeederMotor *feederMotor):
-  m_wifi(wifi), m_firebase(firebase), m_feederRepository(feederRepository), m_timeApi(timeApi), m_feederMotor(feederMotor) {
-  this->m_feeder        = new Feeder();
-  this->m_alarmManager  = new AlarmManager();
+FeederManager::FeederManager(Wifi *wifi, Firebase *firebase, FeederRepository *feederRepository, TimeApi *timeApi, FeederMotor *feederMotor, AlarmManager *alarmManager, Storage *storage):
+  m_wifi(wifi), m_firebase(firebase), m_feederRepository(feederRepository), m_timeApi(timeApi), m_feederMotor(feederMotor), m_alarmManager(alarmManager), m_storage(storage) {
+  this->m_feeder = new Feeder();
 }
 
 FeederManager::~FeederManager() {
@@ -12,16 +11,18 @@ FeederManager::~FeederManager() {
   this->m_feederRepository  = NULL;
   this->m_timeApi           = NULL;
   this->m_feederMotor       = NULL;
+  this->m_alarmManager      = NULL;
+  this->m_storage      = NULL;
   
   delete this->m_feeder;
   this->m_feeder            = NULL;
-
-  delete this->m_alarmManager;
-  this->m_alarmManager      = NULL;
 }
 
 void FeederManager::synchronize() {
   digitalWrite(LED_BUILTIN, HIGH);
+
+  /*this->m_storage->read(*this->m_feeder);
+  Serial.println(this->m_feeder->c_str());*/
 
   if (!this->initConnections()) return;
   Serial.println("Successfully connected.");
@@ -30,7 +31,10 @@ void FeederManager::synchronize() {
   Serial.println("Date time initialized.");
 
   if (!this->getFeeder("0")) return;
-  Serial.println(this->m_feeder->c_str());
+  Serial.println((*this->m_feeder).c_str());
+
+  /*this->m_storage->clearAll();
+  this->m_storage->save(*this->m_feeder);*/
 
   this->m_alarmManager->clearAlarms();
   Serial.println("Alarms cleared.");

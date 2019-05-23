@@ -2,8 +2,9 @@
 #include <LowPower.h>
 
 #include <esp8266.h>
+#include <json-feeder-deserializer.h>
+#include <json-feeder-serializer.h>
 #include <feeder-manager.h>
-#include <alarm-manager.h>
 
 #define PIN_INTERRUPT_SYNC 2
 #define PIN_INTERRUPT_FEED 3
@@ -15,10 +16,14 @@
 ESP8266 esp8266(&SERIAL_COMMUNICATION);
 Wifi wifi(&esp8266);
 Firebase firebase(&esp8266);
-FeederRepository feederRepository(&firebase);
+JsonFeederDeserializer deserializer;
+JsonFeederSerializer serializer;
+FeederRepository feederRepository(&firebase, &deserializer);
+Storage storage(&serializer, &deserializer);
 TimeApi timeApi(&esp8266);
+AlarmManager alarmManager;
 FeederMotor feederMotor;
-FeederManager feederManager(&wifi, &firebase, &feederRepository, &timeApi, &feederMotor);
+FeederManager feederManager(&wifi, &firebase, &feederRepository, &timeApi, &feederMotor, &alarmManager, &storage);
 String currentCommand = "";
 
 void goingToSleep();
